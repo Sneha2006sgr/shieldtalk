@@ -123,9 +123,33 @@ io.on('connection', (socket) => {
 });
 
 // ─── DB + Start ───────────────────────────────────────────────────────
+async function autoSeed() {
+  try {
+    const User = require('./models/User');
+    const existing = await User.findOne({ username: 'hqadmin' });
+    if (existing) {
+      console.log('[seed] HQ Admin already exists — skipping');
+      return;
+    }
+    await User.create({
+      name: 'HQ Administrator',
+      aadhaar: '000000000000',
+      username: 'hqadmin',
+      password: 'ShieldTalk@2024',
+      role: 'hq_admin',
+      status: 'approved',
+      passwordLastChanged: new Date(),
+    });
+    console.log('[seed] ✓ HQ Admin created  username:hqadmin  password:ShieldTalk@2024');
+  } catch (e) {
+    console.error('[seed] error:', e.message);
+  }
+}
+
 mongoose.connect(process.env.MONGO_URI)
-  .then(() => {
+  .then(async () => {
     console.log('MongoDB connected');
+    await autoSeed();
     server.listen(process.env.PORT || 5000, () =>
       console.log(`ShieldTalk running on :${process.env.PORT || 5000}`)
     );
