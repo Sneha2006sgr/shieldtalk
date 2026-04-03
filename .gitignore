@@ -24,6 +24,9 @@ server/uploads/*.webm
 *.log
 npm-debug.log*
 
+# One-time scripts — don't deploy
+server/reset.js
+
 # OS
 .DS_Store
 Thumbs.db
