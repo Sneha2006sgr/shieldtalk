@@ -1,0 +1,158 @@
+@import "tailwindcss";
+
+/* ── CSS Variables — Dark theme (default) ── */
+:root {
+  --bg-primary: #020b18;
+  --bg-secondary: rgba(10, 25, 47, 0.7);
+  --bg-card: rgba(10, 25, 47, 0.85);
+  --border-color: rgba(0, 255, 100, 0.15);
+  --border-strong: rgba(0, 255, 100, 0.3);
+  --text-primary: #e2e8f0;
+  --text-secondary: #94a3b8;
+  --text-muted: #475569;
+  --accent: #00ff64;
+  --accent-dim: #1a4a2e;
+  --danger: #ff3b3b;
+  --warn: #ffa500;
+  --glow: 0 0 20px rgba(0, 255, 100, 0.2);
+  --glow-red: 0 0 20px rgba(255, 59, 59, 0.4);
+  --scan-color: #00ff64;
+  --msg-mine-bg: rgba(26, 74, 46, 0.6);
+  --msg-other-bg: rgba(15, 23, 42, 0.8);
+}
+
+[data-theme="light"] {
+  --bg-primary: #f0f4f8;
+  --bg-secondary: rgba(255, 255, 255, 0.85);
+  --bg-card: rgba(255, 255, 255, 0.95);
+  --border-color: rgba(0, 120, 60, 0.2);
+  --border-strong: rgba(0, 120, 60, 0.4);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --accent: #006633;
+  --accent-dim: #d1fae5;
+  --danger: #dc2626;
+  --warn: #d97706;
+  --glow: 0 0 20px rgba(0, 120, 60, 0.15);
+  --glow-red: 0 0 20px rgba(220, 38, 38, 0.3);
+  --scan-color: #006633;
+  --msg-mine-bg: rgba(209, 250, 229, 0.9);
+  --msg-other-bg: rgba(241, 245, 249, 0.9);
+}
+
+/* ── Base resets ── */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  background-color: var(--bg-primary);
+  min-height: 100%;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Courier New', Courier, monospace;
+  overflow-x: hidden;
+  user-select: none;
+  -webkit-user-select: none;
+  min-height: 100vh;
+}
+
+input, textarea, select {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+img { -webkit-user-drag: none; pointer-events: none; }
+
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--accent-dim); border-radius: 2px; }
+
+/* ── Utility classes (Tailwind v4 syntax) ── */
+@utility glass {
+  background: var(--bg-secondary);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--border-color);
+}
+
+@utility glass-dark {
+  background: var(--bg-card);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-strong);
+}
+
+@utility glow {
+  box-shadow: var(--glow);
+}
+
+@utility glow-red {
+  box-shadow: var(--glow-red);
+}
+
+@utility text-military {
+  color: var(--accent);
+}
+
+@utility text-danger {
+  color: var(--danger);
+}
+
+@utility text-warn {
+  color: var(--warn);
+}
+
+@utility border-military {
+  border-color: var(--border-strong);
+}
+
+@utility scan-line {
+  position: relative;
+  overflow: hidden;
+}
+
+@utility float-anim {
+  animation: float 3s ease-in-out infinite;
+}
+
+@utility radar-ring {
+  animation: radar-pulse 2s ease-out infinite;
+}
+
+@utility cursor-blink {
+  animation: blink-cursor 1s step-end infinite;
+}
+
+/* ── Keyframes ── */
+@keyframes scan {
+  0%   { top: -2px; }
+  100% { top: 100%; }
+}
+
+@keyframes radar-pulse {
+  0%   { transform: scale(0.8); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+/* scan-line pseudo-element — can't go inside @utility, so keep here */
+.scan-line::after {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--scan-color), transparent);
+  animation: scan 2s linear infinite;
+}
