@@ -39,10 +39,12 @@ app.get('/api/health',   (_, res) => res.json({ status: 'OK' }));
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.join(__dirname, '../client/dist');
   app.use(express.static(distPath));
-  app.get('*', (req, res) => {
-    if (!req.path.startsWith('/api') && !req.path.startsWith('/uploads') && !req.path.startsWith('/socket.io')) {
-      res.sendFile(path.join(distPath, 'index.html'));
+  // Express 5 requires named wildcard — use (req,res) catchall
+  app.use((req, res, next) => {
+    if (req.path.startsWith('/api') || req.path.startsWith('/uploads') || req.path.startsWith('/socket.io')) {
+      return next();
     }
+    res.sendFile(path.join(distPath, 'index.html'));
   });
 }
 
