@@ -6,9 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="robots" content="noindex, nofollow" />
     <title>ShieldTalk — Classified Defence Communication</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Color+Emoji&display=swap" rel="stylesheet">
     <style>
-      /* Prevent text selection globally */
       body { user-select: none; -webkit-user-select: none; }
+      /* Emoji fonts MUST come before monospace or they get blocked */
+      * {
+        font-family: 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji',
+                     'Courier New', Courier, monospace;
+      }
+      /* Specific elements that need monospace first */
+      input, textarea, select, button, code, pre, .font-mono {
+        font-family: 'Courier New', Courier, monospace,
+                     'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji';
+      }
     </style>
   </head>
   <body>

@@ -1,35 +1,32 @@
-import { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useAuth } from '../context/AuthContext';
+import { IconDashboard, IconChat, IconCamera, IconFiles, IconSOS, IconLogout } from './Icons';
+import ShieldLogo from './ShieldLogo';
 
 const navItems = [
-  { path: '/dashboard', icon: '⬡', label: 'DASHBOARD' },
-  { path: '/chat',      icon: '💬', label: 'SECURE CHAT' },
-  { path: '/camera',   icon: '📷', label: 'CAMERA' },
-  { path: '/files',    icon: '📁', label: 'FILES' },
-  { path: '/sos',      icon: '🚨', label: 'SOS ALERT' },
+  { path: '/dashboard', Icon: IconDashboard, label: 'DASHBOARD' },
+  { path: '/chat',      Icon: IconChat,      label: 'SECURE CHAT' },
+  { path: '/camera',   Icon: IconCamera,    label: 'CAMERA' },
+  { path: '/files',    Icon: IconFiles,     label: 'FILES' },
+  { path: '/sos',      Icon: IconSOS,       label: 'SOS ALERT' },
 ];
 
 export default function Sidebar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [pulse, setPulse] = useState(true);
-
   const handleLogout = async () => { await logout(); navigate('/login'); };
 
   return (
     <div style={{
       width: 240, height: '100%', minHeight: '100vh',
-      background: 'var(--bg-card)',
-      borderRight: '1px solid var(--border-color)',
-      display: 'flex', flexDirection: 'column',
-      position: 'sticky', top: 0,
+      background: 'var(--bg-card)', borderRight: '1px solid var(--border-color)',
+      display: 'flex', flexDirection: 'column', position: 'sticky', top: 0,
     }}>
       {/* Logo */}
       <div style={{ padding: '20px 20px 16px', borderBottom: '1px solid var(--border-color)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <span style={{ fontSize: 22 }}>🛡️</span>
+          <ShieldLogo size={24} />
           <div>
             <div style={{ fontFamily: 'monospace', fontWeight: 700, color: 'var(--accent)', letterSpacing: 2, fontSize: 13 }}>
               SHIELDTALK
@@ -57,18 +54,17 @@ export default function Sidebar() {
             </div>
           </div>
         </div>
-        <motion.div
-          animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }}
+        <motion.div animate={{ opacity: [1, 0.4, 1] }} transition={{ duration: 2, repeat: Infinity }}
           style={{ marginTop: 8, display: 'flex', alignItems: 'center', gap: 6, fontFamily: 'monospace', fontSize: 10, color: 'var(--accent)' }}>
           <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', display: 'inline-block' }} />
           SECURE SESSION ACTIVE
         </motion.div>
       </div>
 
-      {/* Nav links */}
+      {/* Nav */}
       <nav style={{ flex: 1, padding: '12px 10px', display: 'flex', flexDirection: 'column', gap: 2 }}>
-        {navItems.map(item => (
-          <NavLink key={item.path} to={item.path}
+        {navItems.map(({ path, Icon, label }) => (
+          <NavLink key={path} to={path}
             style={({ isActive }) => ({
               display: 'flex', alignItems: 'center', gap: 10,
               padding: '10px 14px', borderRadius: 6,
@@ -78,8 +74,12 @@ export default function Sidebar() {
               color: isActive ? 'var(--accent)' : 'var(--text-muted)',
               border: isActive ? '1px solid var(--border-strong)' : '1px solid transparent',
             })}>
-            <span style={{ fontSize: 14 }}>{item.icon}</span>
-            <span>{item.label}</span>
+            {({ isActive }) => (
+              <>
+                <Icon size={16} color={isActive ? 'var(--accent)' : 'var(--text-muted)'} />
+                <span>{label}</span>
+              </>
+            )}
           </NavLink>
         ))}
       </nav>
@@ -95,7 +95,7 @@ export default function Sidebar() {
         }}
           onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,59,59,0.1)'}
           onMouseLeave={e => e.currentTarget.style.background = 'transparent'}>
-          <span>⏻</span>
+          <IconLogout size={16} color="var(--danger)" />
           <span>TERMINATE SESSION</span>
         </button>
       </div>

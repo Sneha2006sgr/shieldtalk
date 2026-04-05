@@ -156,3 +156,8 @@ img { -webkit-user-drag: none; pointer-events: none; }
   background: linear-gradient(90deg, transparent, var(--scan-color), transparent);
   animation: scan 2s linear infinite;
 }
+
+@keyframes shieldSpin {
+  0%   { transform: rotateY(0deg); }
+  100% { transform: rotateY(360deg); }
+}
